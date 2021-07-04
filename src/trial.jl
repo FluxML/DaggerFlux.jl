@@ -3,24 +3,24 @@ function dag_chain(c::Chain, ip)
   pb = delayed(Zygote.pullback)((m,x) -> m(x), c[1], ip)
   thy = delayed(getindex)(pb, 1)
   back = delayed(getindex)(pb, 2)
-  # back = delayed((m,x) -> m(x))(back_, thy)
+  f = delayed(c[1])(ip)
   backs = [back]
-  ys = [thy]
   for m in c[2:end]
-    @show m
-    # thy = delayed(getindex)(thpb, 1)
+    f = delayed(m)(f)
     pb = delayed(Zygote.pullback)((m,x) -> m(x), m, thy)
     thy = delayed(getindex)(pb, 1)
     back_ = delayed(getindex)(pb, 2)
-    # back_(back(y)[2])
-    b = delayed((m,x) -> m(x))(back_, thy)
+
+    # replicate back_(back(y)[2])
+    b = delayed_call(back_, thy)
     b_ = delayed(getindex)(b, 2)
-    back = delayed((m,x) -> m(x))(back_, b_)
+    back = delayed_call(back_, b_)
     push!(backs, back_)
-    push!(ys, thy)
   end
-  ys[end], Δ -> makedag(backs, Δ)
+  f, Δ -> makedag(backs, Δ)
 end
+
+delayed_call(f, args) = delayed((m,x) -> m(x))(f, args)
 
 function makedag(backs, Δ)
   b = delayed((m,x) -> m(x))(backs[end], Δ)
