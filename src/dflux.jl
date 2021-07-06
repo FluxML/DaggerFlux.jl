@@ -59,6 +59,16 @@ end
 #     return (result, pb)
 # end
 
+Zygote.@adjoint function Dagger.collect(th::Union{Thunk, Dagger.Chunk})
+  d = delayed(Zygote.pullback)((m,x) -> m(x...), th.f, th.inputs)
+  y, back = collect(d)
+  y, Δ -> begin
+    nt = Zygote.nt_nothing(th)
+    gnt = NamedTuple{(:f, :inputs)}(back(Δ))
+    (Zygote.accum(nt, gnt),)
+  end
+end
+
 function dagger_train!(loss, ps, data, opt; cb = ()->())
     ps = Flux.Params(ps)
     cb = Flux.Optimise.runall(cb)
