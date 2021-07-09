@@ -229,7 +229,7 @@ function f_rev(th::Thunk, args...; cache = IdDict())
   end
 end
 
-f_rev(args...; cache = IdDict()) = tuple(get!(cache, x, nothing) for x in args)
+f_rev(args...; cache = IdDict()) = Tuple(get!(cache, x, nothing) for x in args)
 
 
 ########## HACKS ###########
