@@ -118,6 +118,10 @@ struct Res{T,S}
   y::S
 end
 
+
+# function at_node(ctx, curr, depth)
+# end
+
 function dfs2(current_node,
              next_nodes,
              at_node,
@@ -193,33 +197,39 @@ function dfs(current_node,
   return y, curr_in
 end
 
-function f_rev(f, ystart, th::Dagger.Thunk, x...)
-  @show "in f_rev"
-  @warn ystart
-  if isleaf(th) # !any(x -> x isa Thunk, Dagger.inputs(th))
-    y, pb = Zygote.pullback(th.f, Dagger.inputs(th)...)
-    @info "in the leaf f: $f, $(th.f)"
-    # @show th.f
-    @show y, pb(1.f0)
-    rev = delayed(f)(delayed(getindex)(delayed(pb)(1.f0), 1))
-    return y, rev
+function f_rev(f, args...; cache = IdDict())
+  rev = f_rev(args..., cache = cache)
+  if isempty(rev)
+    back = identity
+    y = f
   else
-    @info "in the non leaf f: $f, $(th.f), $ystart"
-    # @show f, th.f
-    # @show curr_in = collect(Dagger.inputs(th)[1])
-    @show th.f, x, ystart
-    yn, pbn = Zygote.pullback(th.f, curr_in)
-    # yn, pbn = Zygote.pullback(x.f, curr_in)
-    @show yn, ystart
-    rev = delayed(f)(delayed(getindex)(delayed(pbn)(curr_in), 1))
-    return yn, rev
+    pb = delayed(Zygote.pullback)((m,x) -> m(x), f, rev[1])
+    b = delayed(getindex)(pb, 2)
+    # pb1(pb2(one.(y1))[2])
+    Δ = ones(Float32, 2)
+    b_ = delayed((m,x) -> m(x))(b, Δ)
+    b__ = delayed(getindex)(b_, 2)
+    back = delayed((m,x) -> m(x))(cache[rev[1].f], b__)
+    cache[f] = back
+    y = delayed((m,x) -> m(x))(f, rev[1])
   end
-  y, rev
+  y, back
 end
 
-# f_rev(th::Thunk, x) = f_rev(identity, 1, th, x)
-# f_rev(x::AbstractArray, t...) = x, _ -> t
-f_rev(x...) = (x[1], _ -> collect(x[1]))# (nothing, nothing)
+
+function f_rev(th::Thunk, args...; cache = IdDict())
+  if ispurethunk(th) # TODO: rename to isleafthunk
+    pb = delayed(Zygote.pullback)((m,x) -> m(x), th.f, th.inputs...)
+    b = delayed(getindex)(pb, 2)
+    cache[th.f] = b
+    th, b
+  else
+    i = f_rev(th.inputs..., cache = cache)
+    f_rev(th.f, i[1], cache = cache)
+  end
+end
+
+f_rev(args...; cache = IdDict()) = tuple(get!(cache, x, nothing) for x in args)
 
 
 ########## HACKS ###########
