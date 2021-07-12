@@ -12,9 +12,9 @@ function dag_chain(c::Chain, ip)
     back_ = delayed(getindex)(pb, 2)
 
     # replicate back_(back(y)[2])
-    b = delayed_call(back_, thy)
-    b_ = delayed(getindex)(b, 2)
-    back = delayed_call(back_, b_)
+    # b = delayed_call(back_, thy)
+    # b_ = delayed(getindex)(b, 2)
+    # back = delayed_call(back_, b_)
     push!(backs, back_)
   end
   f, Δ -> makedag(backs, Δ)
