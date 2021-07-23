@@ -1,4 +1,5 @@
 using DaggerFlux, Dagger, Flux, Distributed, Metalhead
+using Test
 
 function compare(y::Tuple, ŷ)
   foreach((a,b) -> compare(a, b), y, ŷ)
