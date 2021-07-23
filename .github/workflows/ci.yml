@@ -59,12 +59,12 @@ jobs:
             Pkg.instantiate()'
       - run: |
           julia --project=docs/ -e '
-            using Flux
+            using DaggerFlux
             # using Pkg; Pkg.activate("docs")
             using Documenter
             using Documenter: doctest
-            DocMeta.setdocmeta!(Flux, :DocTestSetup, :(using Flux); recursive=true)
-            doctest(Flux)'
+            DocMeta.setdocmeta!(DaggerFlux, :DocTestSetup, :(using DaggerFlux); recursive=true)
+            doctest(DaggerFlux)'
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
