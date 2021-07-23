@@ -19,8 +19,8 @@ function (dc::DaggerChain)(x)
     # collect(t)
 end
 
-include("trial.jl")
-include("sth.jl")
+# include("treewalk.jl")
+include("dflux.jl")
 
 function dagger_train!(loss, ps, data, opt; cb = ()->())
     ps = Flux.Params(ps)
