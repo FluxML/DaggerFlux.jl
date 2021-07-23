@@ -25,4 +25,4 @@ Metalhead = "dbeba491-748d-5e0e-a39e-b530a07fa0cc"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Dagger", "Distributed", "Flux", "Dagger", "Test"]
+test = ["Dagger", "Distributed", "Flux", "Metalhead", "Test"]
