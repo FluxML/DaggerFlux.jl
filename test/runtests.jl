@@ -31,7 +31,7 @@ function compare(a, b)
 end
 
 @testset "ResNet test" begin
-  addprocs(2, exeflags = "--project=.")
+  # addprocs(2, exeflags = "--project=.")
   resnet = ResNet()
   ip = rand(Float32, 224, 224, 3, 1)
   y_, b_ = Zygote.pullback((m,x) -> m(x), resnet.layers, ip)
