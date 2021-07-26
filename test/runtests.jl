@@ -44,6 +44,6 @@ end
   resy, resbacks = DaggerFlux.dag_chain(resnet.layers, ip)
   resgs = resbacks(ones(Float32, 1000, 1))
 
-  @test resy ≈ y_
+  @test collect(resy) ≈ y_
   compare(g2, resgs)
 end
