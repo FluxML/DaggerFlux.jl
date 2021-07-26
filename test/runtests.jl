@@ -1,4 +1,5 @@
 using DaggerFlux, Dagger, Flux, Distributed, Metalhead
+using Flux.Zygote
 using Test
 
 function compare(y::Tuple, ŷ)
