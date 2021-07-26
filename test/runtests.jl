@@ -1,5 +1,7 @@
-using DaggerFlux, Dagger, Flux, Distributed, Metalhead
+using DaggerFlux, Dagger
+using Flux, Metalhead
 using Flux.Zygote
+using Distributed
 using Test
 
 function compare(y::Tuple, ŷ)
