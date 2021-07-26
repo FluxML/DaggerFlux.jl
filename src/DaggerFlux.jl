@@ -21,6 +21,7 @@ end
 
 # include("treewalk.jl")
 include("dflux.jl")
+include("dag_chain.jl")
 
 function dagger_train!(loss, ps, data, opt; cb = ()->())
     ps = Flux.Params(ps)
