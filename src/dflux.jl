@@ -32,6 +32,10 @@ end
 
 @adjoint function (dc::DaggerChain)(x)
   thy, thb = dag_chain(dc.chain, x)
+  thy, Δ -> begin
+    gm, gx = thb(Δ)
+    (chain = gm,), gx
+  end
 end
 
 function reverse_graph(t::Dagger.Thunk, x...)
