@@ -97,11 +97,9 @@ uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 
 [[Dagger]]
 deps = ["Colors", "Distributed", "LinearAlgebra", "MemPool", "Profile", "Random", "Requires", "Serialization", "SharedArrays", "SparseArrays", "Statistics", "StatsBase"]
-git-tree-sha1 = "be021af151a0e58e94ce0fc6572c644fee97c355"
-repo-rev = "dg/precomp"
-repo-url = "https://github.com/DhairyaLGandhi/Dagger.jl"
+git-tree-sha1 = "705bee846391d62e3a480022a2148b9b7971b3b0"
 uuid = "d58978e5-989f-55fb-8d15-ea34adc7bf54"
-version = "0.11.6"
+version = "0.11.7"
 
 [[DataAPI]]
 git-tree-sha1 = "ee400abb2298bd13bfc3df1c412ed228061a2385"
