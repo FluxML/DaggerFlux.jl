@@ -47,3 +47,12 @@ end
   # @test collect(resy) ≈ y_
   compare(g2, resgs)
 end
+
+@testset "DaggerChain tests" begin
+  m = Chain(Dense(2,2), Dense(2,2))
+  dm = DaggerChain(m)
+  ip = rand(Float32, 2, 4)
+
+  y, back = Zygote.pullback((m,x) -> m(x), dm, ip)
+  @test collect(y) ≈ m(ip)
+end
