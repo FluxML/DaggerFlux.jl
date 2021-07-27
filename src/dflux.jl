@@ -31,7 +31,7 @@ end
 # dc = DaggerChain(m)
 
 @adjoint function (dc::DaggerChain)(x)
-  thy, thb = dag_chain(dc.model, x)
+  thy, thb = dag_chain(dc.chain, x)
 end
 
 function reverse_graph(t::Dagger.Thunk, x...)
