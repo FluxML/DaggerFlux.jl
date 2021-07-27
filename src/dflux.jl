@@ -26,10 +26,17 @@ end
 #     return dc(x), back
 # end
 
-ip = rand(Float32, 1, 1)
-m = Chain(Dense(1,2), Dense(2,2), Dense(2,3))
-dc = DaggerChain(m)
+# ip = rand(Float32, 1, 1)
+# m = Chain(Dense(1,2), Dense(2,2), Dense(2,3))
+# dc = DaggerChain(m)
 
+@adjoint function (dc::DaggerChain)(x)
+  thy, thb = dag_chain(dc.chain, x)
+  thy, Δ -> begin
+    gm, gx = thb(Δ)
+    (chain = gm,), gx
+  end
+end
 
 function reverse_graph(t::Dagger.Thunk, x...)
     pb = delayed(Zygote.pullback)(t.f, x...)
