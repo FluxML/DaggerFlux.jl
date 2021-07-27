@@ -4,8 +4,8 @@ using Dagger
 using Flux, Zygote
 using Zygote: @adjoint 
 
-export dfs, dfs2, f_rev
-export f2, dag_chain
+# export dfs, dfs2, f_rev
+export DaggerChain, dag_chain
 
 struct DaggerChain
     chain::Chain
@@ -67,9 +67,9 @@ end
 isleaf(x::Union{Tuple,AbstractVector}) = any(isleaf, x)
 isleaf(x) = true
 
-ip = rand(Float32, 1, 1)
-m = Chain(Dense(1,2), Dense(2,2), Dense(2,3))
-dc = DaggerChain(m)
+# ip = rand(Float32, 1, 1)
+# m = Chain(Dense(1,2), Dense(2,2), Dense(2,3))
+# dc = DaggerChain(m)
 
-export ip, m, dc
+# export ip, m, dc
 end
