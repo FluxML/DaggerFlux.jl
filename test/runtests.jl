@@ -53,6 +53,13 @@ end
   dm = DaggerChain(m)
   ip = rand(Float32, 2, 4)
 
-  y, back = Zygote.pullback((m,x) -> m(x), dm, ip)
-  @test collect(y) ≈ m(ip)
+  thy, thback = Zygote.pullback((m,x) -> m(x), dm, ip)
+  @test collect(thy) ≈ m(ip)
+  y, back = Zygote.pullback((m,x) -> m(x), m, ip)
+
+  Δ = ones(Float32, 2,4)
+  thgs = thback(Δ)
+  gs = back(Δ)
+  compare(thgs[1].chain, gs[1])
+  @test thgs[2] ≈ gs[2]
 end
