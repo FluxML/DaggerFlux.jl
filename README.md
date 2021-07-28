@@ -9,7 +9,7 @@ To see the package in action, we would have to start julia with multiple workers
 Also make sure that the workers have access to the environment and code that is going to be run. This is typically done with the help of the `exeflags` keyword in `addprocs`. Something like `addprocs(2, exeflags = "--project")` is usually enough. Please ensure that the environment has access to `DaggerFlux`.
 
 ```julia
-julia> @everywhere using DaggerFlux, Dagger, Flux, Zygote
+julia> using DaggerFlux, Dagger, Flux, Zygote
 
 julia> @everywhere function layer(x)
          @show myid()
@@ -85,15 +85,11 @@ DaggerChain(Chain(Dense(2, 2), Dense(2, 2)))
 
 julia> y, b = Zygote.pullback((m,x) -> m(x), dm, rand(Float32, 2
 ,2))
-(Thunk[150](Dense(2, 2), (Thunk[149](Dense(2, 2), ...),)), Zygot
-e.var"#46#47"{typeof(∂(#13))}(∂(#13)))
+(Thunk[150](Dense(2, 2), (Thunk[149](Dense(2, 2), ...),)), Zygote.var"#46#47"{typeof(∂(#13))}(∂(#13)))
 
 julia> b(one.(y))
-((chain = (layers = ((weight = Float32[1.0398567 0.45392603; 0.4
-867683 0.21248773], bias = Float32[1.6065784, 0.75205684], σ = n
-othing), (weight = Float32[-1.247205 1.2783735; -1.247205 1.2783
-735], bias = Float32[2.0, 2.0], σ = nothing)),),), Float32[-0.14
-533046 -0.14533046; -0.58934844 -0.58934844])
+((chain = (layers = ((weight = Float32[1.0398567 0.45392603; 0.4867683 0.21248773], bias = Float32[1.6065784, 0.75205684], σ = nothing), (weight = Float32[-1.247205 1.2783735; -1.247205 1.278
+735], bias = Float32[2.0, 2.0], σ = nothing)),),), Float32[-0.14533046 -0.14533046; -0.58934844 -0.58934844])
 ```
 
 
