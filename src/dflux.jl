@@ -8,10 +8,8 @@ end
 
 function (dc::DaggerChain)(x)
     t = foldl(dc.chain.layers; init = x) do l1, l2
-        # @show l2
         delayed(l2)(l1)
     end
-    # collect(t)
 end
 
 @adjoint function (dc::DaggerChain)(x)
