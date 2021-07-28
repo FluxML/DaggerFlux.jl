@@ -77,3 +77,38 @@ function dfs2(current_node,
   # @show fv
 end
 
+
+## From dflux.jl
+
+function f_rev(th::Thunk, args...; cache = IdDict())
+  if ispurethunk(th) # TODO: rename to isleafthunk
+    pb = delayed(Zygote.pullback)((m,x) -> m(x), th.f, th.inputs...)
+    b = delayed(getindex)(pb, 2)
+    cache[th.f] = b
+    th, b
+  else
+    i = f_rev(th.inputs..., cache = cache)
+    f_rev(th.f, i[1], cache = cache)
+  end
+end
+
+f_rev(args...; cache = IdDict()) = Tuple(get!(cache, x, nothing) for x in args)
+
+function f_rev(f, args...; cache = IdDict())
+  rev = f_rev(args..., cache = cache)
+  if isempty(rev)
+    back = identity
+    y = f
+  else
+    pb = delayed(Zygote.pullback)((m,x) -> m(x), f, rev[1])
+    b = delayed(getindex)(pb, 2)
+    # pb1(pb2(one.(y1))[2])
+    Δ = ones(Float32, 2)
+    b_ = delayed((m,x) -> m(x))(b, Δ)
+    b__ = delayed(getindex)(b_, 2)
+    back = delayed((m,x) -> m(x))(cache[rev[1].f], b__)
+    cache[f] = back
+    y = delayed((m,x) -> m(x))(f, rev[1])
+  end
+  y, back
+end
