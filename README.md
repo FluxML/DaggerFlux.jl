@@ -29,9 +29,9 @@ Thunk[4](layer, (Thunk[3](layer, ...),))
 
 julia> collect(dc(ip))
       From worker 2:    myid() = 2
-      From worker 2:    myid() = 3
+      From worker 3:    myid() = 3
       From worker 2:    myid() = 2
-      From worker 2:    myid() = 3
+      From worker 3:    myid() = 3
 3×3 Matrix{Float64}:
  0.813575   0.828228  0.0630336
  0.0755053  0.215495  0.64503
@@ -49,8 +49,8 @@ julia> y, back = Zygote.pullback((m,x) -> m(x), dc, ip)
 (Thunk[135](layer, (Thunk[131](layer, ...),)), Zygote.var"#46#47"{typeof(∂(#11))}(∂(#11)))
 
 julia> collect(y)
-      From worker 2:    myid() = 3
-      From worker 2:    myid() = 3
+      From worker 3:    myid() = 3
+      From worker 3:    myid() = 3
       From worker 2:    myid() = 2
       From worker 2:    myid() = 2
 3×3 Matrix{Float64}:
@@ -61,10 +61,10 @@ julia> collect(y)
 julia> back(one.(y))
       From worker 2:    myid() = 2
       From worker 2:    myid() = 2
-      From worker 2:    myid() = 3
+      From worker 3:    myid() = 3
       [...]
       From worker 2:    myid() = 2
-      From worker 2:    myid() = 3
+      From worker 3:    myid() = 3
       From worker 2:    myid() = 2
 ((chain = (layers = (nothing, nothing, nothing, nothing),),), [1.0 1.0 1.0; 1.0 1.0 1.0; 1.0 1.0 1.0])
 ```
