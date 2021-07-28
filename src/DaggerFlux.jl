@@ -4,7 +4,6 @@ using Dagger
 using Flux, Zygote
 using Zygote: @adjoint 
 
-# export dfs, dfs2, f_rev
 export DaggerChain, dag_chain
 
 struct DaggerChain
@@ -13,10 +12,8 @@ end
 
 function (dc::DaggerChain)(x)
     t = foldl(dc.chain.layers; init = x) do l1, l2
-        # @show l2
         delayed(l2)(l1)
     end
-    # collect(t)
 end
 
 # include("treewalk.jl")
@@ -44,10 +41,6 @@ end
 
 function dowalk(th::Thunk, r = Thunk[])
   node = th
-  # if isleaf(node)
-  #   @show node
-  #   push!(r, node)
-  # end
   next_nodes = node.inputs
   for next_node in next_nodes
     @show next_node
@@ -67,9 +60,4 @@ end
 isleaf(x::Union{Tuple,AbstractVector}) = any(isleaf, x)
 isleaf(x) = true
 
-# ip = rand(Float32, 1, 1)
-# m = Chain(Dense(1,2), Dense(2,2), Dense(2,3))
-# dc = DaggerChain(m)
-
-# export ip, m, dc
 end
