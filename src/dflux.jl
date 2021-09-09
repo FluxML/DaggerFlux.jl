@@ -8,7 +8,7 @@ struct DaggerChain
 end
 
 daglayer(f, args...) = delayed((m,x...) -> m(x...))(Dagger.tochunk(f, DaggerGPU.CuArrayDeviceProc(1, CUDA.device().handle, CUDA.uuid(CUDA.device()))), args...)
-# daglayer(par::Parallel, ip...) = delayed((x...) -> par.connection(x...))(daglayer(f, ip...) for f in par.layers)
+daglayer(par::Parallel, ip...) = delayed((x...) -> par.connection(x...))(daglayer(f, ip...) for f in par.layers)
 
 function (dc::DaggerChain)(x)
     t = foldl(dc.chain.layers; init = x) do l1, l2
