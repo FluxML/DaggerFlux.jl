@@ -1,14 +1,20 @@
 using Dagger
 using Flux, Zygote
 using Zygote: @adjoint 
+using DaggerGPU, CUDA
 
 struct DaggerChain
     chain::Chain
 end
 
+# TODO: Remove/adapt once https://github.com/JuliaParallel/Dagger.jl/pull/271 is merged
+daglayer(f, args...) = delayed((m,x...) -> m(x...))(Dagger.tochunk(f, DaggerGPU.CuArrayDeviceProc(1, CUDA.device().handle, CUDA.uuid(CUDA.device()))), args...)
+daglayer(par::Parallel, ip...) = delayed((x...) -> par.connection(x...))(daglayer(f, ip...) for f in par.layers)
+
 function (dc::DaggerChain)(x)
     t = foldl(dc.chain.layers; init = x) do l1, l2
-        delayed(l2)(l1)
+        # delayed(l2)(l1)
+	daglayer(l2, l1)
     end
 end
 
