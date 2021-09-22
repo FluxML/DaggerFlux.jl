@@ -4,14 +4,18 @@ authors = ["dhairyagandhi <dhairya@juliacomputing.com>"]
 version = "0.1.0"
 
 [deps]
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 Dagger = "d58978e5-989f-55fb-8d15-ea34adc7bf54"
+DaggerGPU = "68e73e28-2238-4d5a-bf97-e5d4aa3c4be2"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
 Functors = "d9f16b24-f501-4c13-a1f2-28368ffc5196"
 NNlib = "872c559c-99b0-510c-b3b7-b6c96a88d5cd"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [compat]
-Dagger = "0.11"
+CUDA = "3.4"
+Dagger = "0.11, 0.12, 0.13"
+DaggerGPU = "0.1"
 Flux = "0.12"
 Functors = "0.2"
 NNlib = "0.7"
