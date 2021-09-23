@@ -92,9 +92,9 @@ version = "0.3.0"
 
 [[Compat]]
 deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "SHA", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
-git-tree-sha1 = "4866e381721b30fac8dda4c8cb1d9db45c8d2994"
+git-tree-sha1 = "1a90210acd935f222ea19657f143004d2c2a1117"
 uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
-version = "3.37.0"
+version = "3.38.0"
 
 [[CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -102,13 +102,13 @@ uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 
 [[Dagger]]
 deps = ["Colors", "Distributed", "LinearAlgebra", "MemPool", "Profile", "Random", "Requires", "Serialization", "SharedArrays", "SparseArrays", "Statistics", "StatsBase", "TableOperations", "Tables", "UUIDs"]
-git-tree-sha1 = "8a0fc297de557c3272fceb7fb5855ec4ea85929c"
+git-tree-sha1 = "8c94a0cc5035b321be89ece7c92d344f83fdb2c3"
 uuid = "d58978e5-989f-55fb-8d15-ea34adc7bf54"
-version = "0.12.5"
+version = "0.13.3"
 
 [[DaggerGPU]]
 deps = ["Adapt", "Dagger", "Distributed", "KernelAbstractions", "MemPool", "Requires", "UUIDs"]
-git-tree-sha1 = "25e0ddb2d460f76ac40d26d300899ab6af09add3"
+git-tree-sha1 = "31d31201b2bb98dbe8f2150b187d78686b2e7204"
 repo-rev = "jps/cuda-ipc"
 repo-url = "https://github.com/JuliaGPU/DaggerGPU.jl.git"
 uuid = "68e73e28-2238-4d5a-bf97-e5d4aa3c4be2"
