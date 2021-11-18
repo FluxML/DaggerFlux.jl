@@ -36,7 +36,7 @@ end
 
 @testset "ResNet test" begin
   # addprocs(2, exeflags = "--project=.")
-  resnet = ResNet()
+  resnet = ResNet50()
   ip = rand(Float32, 224, 224, 3, 1)
   y_, b_ = Zygote.pullback((m,x) -> m(x), resnet.layers, ip)
   g2 = b_(ones(Float32, 1000, 1))
