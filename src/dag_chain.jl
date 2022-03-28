@@ -1,6 +1,6 @@
-function dag_chain(c::Chain, ip)
+function dag_chain(c::Chain, ip...)
   # y = ip
-  pb = delayed(Zygote.pullback)((m,x) -> m(x), c[1], ip)
+  pb = delayed(Zygote.pullback)((m,x) -> m(x...), c[1], ip)
   thy = delayed(getindex)(pb, 1)
   back = delayed(getindex)(pb, 2)
   f = delayed(c[1])(ip)
