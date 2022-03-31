@@ -1,9 +1,9 @@
-function dag_chain(c::Chain, ip...)
+function dag_chain(c, ip...)
   # y = ip
   pb = delayed(Zygote.pullback)((m,x) -> m(x...), c[1], ip)
   thy = delayed(getindex)(pb, 1)
   back = delayed(getindex)(pb, 2)
-  f = delayed(c[1])(ip)
+  f = delayed(c[1])(ip...)
   backs = [back]
   for m in c[2:end]
     f = delayed(m)(f)
@@ -17,7 +17,7 @@ function dag_chain(c::Chain, ip...)
     # back = delayed_call(back_, b_)
     push!(backs, back_)
   end
-  f, Δ -> makedag(backs, Δ)
+  collect(f), Δ -> makedag(backs, Δ)
 end
 
 delayed_call(f, args) = delayed((m,x) -> m(x))(f, args)
@@ -36,4 +36,4 @@ function makedag(backs, Δ)
   ((layers = Tuple(reverse(first.(cout))),)), cout[end][2]
 end
 
-dag_chain(f, x...) = delayed(Zygote.pullback)(f, (x...))
+# dag_chain(f, x...) = delayed(Zygote.pullback)(f, (x...))
