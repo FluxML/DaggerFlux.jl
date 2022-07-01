@@ -10,25 +10,6 @@ export DaggerChain, dag_chain
 include("dflux.jl")
 include("dag_chain.jl")
 
-function dagger_train!(loss, ps, data, opt; cb = ()->())
-    ps = Flux.Params(ps)
-    cb = Flux.Optimise.runall(cb)
-    batches = [
-        delayed() do d
-            Flux.gradient(ps) do
-                loss(Flux.Optimise.batchmemaybe(d)...)
-            end
-        end(d) for d in data]
-    redu = delayed(; single=1) do gs...
-        for g in gs
-            Flux.Optimise.update!(opt, ps, g)
-            cb()
-        end
-    end
-    reducer = redu(batches...)
-    compute(reducer)
-end
-
 function dowalk(th::Thunk, r = Thunk[])
   node = th
   next_nodes = node.inputs

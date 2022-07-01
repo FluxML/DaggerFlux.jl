@@ -32,7 +32,7 @@ function makedag(backs, Δ)
 
     push!(out, b)
   end
-  cout = collect.(out)
+  cout = collect(delayed((xs...)->xs)(out...))
   ((layers = Tuple(reverse(first.(cout))),)), cout[end][2]
 end
 
