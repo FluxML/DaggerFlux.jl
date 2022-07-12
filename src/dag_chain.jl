@@ -33,7 +33,7 @@ function makedag(backs, Δ)
     push!(out, b)
   end
   cout = collect(delayed((xs...)->xs)(out...))
-  ((layers = Tuple(reverse(first.(cout))),)), cout[end][2]
+  (((layers = Tuple(reverse(first.(cout))),)), cout[end][2]...)
 end
 
 # dag_chain(f, x...) = delayed(Zygote.pullback)(f, (x...))

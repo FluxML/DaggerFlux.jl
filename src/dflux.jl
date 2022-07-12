@@ -22,14 +22,13 @@ Flux.@functor DaggerChain
   thy, thb = dag_chain(dc.chain, x...)
   thy, Δ -> begin
     gm, gx = thb(Δ)
-    ((chain = gm,), gx...)
+    ((chain = gm,), gx)
   end
 end
 
 function reverse_graph(t::Dagger.Thunk, x...)
     pb = delayed(Zygote.pullback)(t.f, x...)
     for (idx, arg) in enumerate(t.inputs)
-        @show typeof(arg)
         # reverse_graph(arg, pb[idx]...)
         # reverse_graph(arg.f, arg.inputs...)
         reverse_graph(arg, pb.inputs[idx]...)
