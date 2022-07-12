@@ -44,7 +44,7 @@ end
 
   resy, resbacks = DaggerFlux.dag_chain(resnet.layers, ip)
   resgs = resbacks(ones(Float32, 1000, 1))
-
+  # @show typeof(g2), typeof(resgs)
   # @test collect(resy) ≈ y_
   compare(g2, resgs)
 end
@@ -63,4 +63,12 @@ end
   gs = back(Δ)
   compare(thgs[1].chain, gs[1])
   @test thgs[2] ≈ gs[2]
+
+  # dag_chain
+  y_, b_ = Zygote.pullback((m,x) -> m(x), m, ip)
+  _gs = b_(Δ)
+
+  resy, resbacks = DaggerFlux.dag_chain(m, ip)
+  th_gs = resbacks(Δ)
+  compare(_gs, th_gs)
 end
