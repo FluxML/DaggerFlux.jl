@@ -1,7 +1,6 @@
 using Dagger
 using Flux, Zygote
 using Zygote: @adjoint
-using DaggerGPU, CUDA
 
 struct DaggerChain
     chain::Chain
