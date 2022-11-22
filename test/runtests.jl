@@ -42,7 +42,7 @@ end
 
 @testset "ResNet test" begin
   # addprocs(2, exeflags = "--project=.")
-  resnet = ResNet()
+  resnet = ResNet(50)
   ip = rand(Float32, 224, 224, 3, 1) |> gpu
   y_, b_ = Zygote.pullback((m,x) -> m(x), gpu(resnet.layers), ip)
   Δ = ones(Float32, 1000, 1) |> gpu
