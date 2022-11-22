@@ -14,10 +14,14 @@ function compare(y::NamedTuple, ŷ)
   foreach((a,b) -> compare(a, b), y, ŷ)
 end
 
-function compare(a::AbstractArray, b)
+function compare(a::AbstractArray{<:Real}, b)
   @testset "Arrays" begin
     @test a ≈ b
   end
+end
+
+function compare(y::AbstractVector, ŷ)
+  foreach((a,b) -> compare(a, b), y, ŷ)
 end
 
 function compare(a::Base.RefValue, b::Base.RefValue)
