@@ -14,13 +14,13 @@ function compare(y::NamedTuple, ŷ)
   foreach((a,b) -> compare(a, b), y, ŷ)
 end
 
-function compare(a::AbstractArray{<:Real}, b)
+function compare(a::AbstractArray{<:Number}, b)
   @testset "Arrays" begin
     @test a ≈ b
   end
 end
 
-function compare(y::AbstractVector, ŷ)
+function compare(y::AbstractVector{<:Union{NamedTuple, Nothing}}, ŷ)
   foreach((a,b) -> compare(a, b), y, ŷ)
 end
 
