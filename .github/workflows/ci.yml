@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - master
-      - update-ci
     tags: '*'
 
 jobs:
@@ -18,8 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1' # Replace this with the minimum Julia version that your package supports.
           - '1.6'
+          - '1.7'
+          - '1'
           - 'nightly'
         os:
           - ubuntu-latest
