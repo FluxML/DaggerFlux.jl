@@ -14,10 +14,14 @@ function compare(y::NamedTuple, ŷ)
   foreach((a,b) -> compare(a, b), y, ŷ)
 end
 
-function compare(a::AbstractArray, b)
+function compare(a::AbstractArray{<:Number}, b)
   @testset "Arrays" begin
     @test a ≈ b
   end
+end
+
+function compare(y::AbstractVector{<:Union{NamedTuple, Nothing}}, ŷ)
+    foreach((a,b) -> compare(a, b), y, ŷ)
 end
 
 function compare(a::Base.RefValue, b::Base.RefValue)
@@ -38,7 +42,7 @@ end
 
 @testset "ResNet test" begin
   # addprocs(2, exeflags = "--project=.")
-  resnet = ResNet50()
+  resnet = ResNet(50)
   ip = rand(Float32, 224, 224, 3, 1) |> gpu
   y_, b_ = Zygote.pullback((m,x) -> m(x), gpu(resnet.layers), ip)
   Δ = ones(Float32, 1000, 1) |> gpu
