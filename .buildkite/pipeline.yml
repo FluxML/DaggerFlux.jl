@@ -8,8 +8,7 @@ steps:
           version: "1.6"
       - JuliaCI/julia-test#v1: ~
     agents:
-      queue: "juliagpu"
-      cuda: "*"
+      queue: "cuda"
     timeout_in_minutes: 60
 
   - label: "GPU integration with julia v1"
@@ -18,6 +17,5 @@ steps:
           version: "1"
       - JuliaCI/julia-test#v1: ~
     agents:
-      queue: "juliagpu"
-      cuda: "*"
+      queue: "cuda"
     timeout_in_minutes: 60
